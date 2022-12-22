@@ -33,22 +33,13 @@ class MainViewModel() : ViewModel() {
         get() = _statusMessage
 
 
-    private val _status = MutableLiveData<String>()
-    val status: LiveData<String>
-    get() = _status
-
-    fun resetStatus() {
-        Timer().schedule(2000) {
-            _status.postValue("")
-        }
-    }
 
     @SuppressLint("SuspiciousIndentation")
     fun insertData(name: String, text: String) {
         val postId = dbRef.push().key!!
         dbRef.child(postId).setValue(Post(postId, name, text)).addOnCompleteListener {
-            _statusMessage.value = Event("Posted succesfully!")
+            _statusMessage.value = Event("Posted successfully!")
         }
-            .addOnFailureListener { _status.value = "Error!" }
+            .addOnCanceledListener { _statusMessage.value = Event("Error!") }
     }
 }

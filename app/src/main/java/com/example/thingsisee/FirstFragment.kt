@@ -1,6 +1,7 @@
 package com.example.thingsisee
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.thingsi.Data.Post
 import com.example.thingsisee.ViewModels.MainViewModel
 import com.example.thingsisee.databinding.FragmentFirstBinding
+import java.util.*
+import kotlin.concurrent.schedule
+import kotlin.concurrent.timer
 
 class FirstFragment : Fragment() {
     private var _binding: FragmentFirstBinding? = null
@@ -40,20 +44,19 @@ class FirstFragment : Fragment() {
         mMainViewModel.statusMessage.observe(viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+                if (it == "Posted successfully!") findNavController().navigate(R.id.action_FirstFragment_to_postFragment)
             }
         })
 
         val postNameET = binding.postNameValue
         val postTextET = binding.postTextValue
 
-        binding.buttonGoToList.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_postFragment)
-        }
 
         binding.postButton.setOnClickListener {
             mMainViewModel.insertData(postNameET.text.toString(), postTextET.text.toString())
             postNameET.text.clear()
             postTextET.text.clear()
+
         }
     }
 
