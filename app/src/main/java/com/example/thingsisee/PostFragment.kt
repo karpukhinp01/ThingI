@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thingsisee.Data.PostViewModel
+import com.example.thingsisee.ViewModels.MainViewModel
 import com.example.thingsisee.databinding.FragmentPostListBinding
 
 /**
@@ -16,7 +19,7 @@ import com.example.thingsisee.databinding.FragmentPostListBinding
  */
 class PostFragment : Fragment() {
 
-    private lateinit var mPostViewModel: PostViewModel
+    private lateinit var mMainViewModel: MainViewModel
     private var _binding: FragmentPostListBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -35,23 +38,16 @@ class PostFragment : Fragment() {
 
         // getting the recyclerview by its id
         val recyclerview = binding.recyclerview
+        val adapter = PostRecyclerViewAdapter()
+        // Setting the Adapter with the recyclerview
+        recyclerview.adapter = adapter
 
         // this creates a vertical layout Manager
         recyclerview.layoutManager = LinearLayoutManager(requireContext())
+        mMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        mMainViewModel.allPosts.observe(viewLifecycleOwner, Observer {
+            adapter.updatePosts(it)
+        })
 
-        // ArrayList of class ItemsViewModel
-        val data = ArrayList<PostViewModel>()
-
-        // This loop will create 20 Views containing
-        // the image with the count of view
-        for (i in 1..20) {
-            data.add(PostViewModel("Heading $i", "Item $i"))
-        }
-
-        // This will pass the ArrayList to our Adapter
-        val adapter = PostRecyclerViewAdapter(data)
-
-        // Setting the Adapter with the recyclerview
-        recyclerview.adapter = adapter
     }
 }

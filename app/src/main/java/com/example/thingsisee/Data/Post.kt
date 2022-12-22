@@ -1,7 +1,7 @@
 package com.example.thingsi.Data
 
 data class Post(
-    var postId: String,
-    var postName: String?,
-    var postText: String?
+    var postId: String? = null,
+    var postName: String? = null,
+    var postText: String? = null
 )

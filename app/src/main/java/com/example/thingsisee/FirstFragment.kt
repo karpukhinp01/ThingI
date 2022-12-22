@@ -37,8 +37,11 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        mMainViewModel.status.observe(viewLifecycleOwner) { binding.status.text = it
-        }
+        mMainViewModel.statusMessage.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled()?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
+        })
 
         val postNameET = binding.postNameValue
         val postTextET = binding.postTextValue
