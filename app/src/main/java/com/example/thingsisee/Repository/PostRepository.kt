@@ -39,7 +39,11 @@ class PostRepository {
 
             override fun onCancelled(error: DatabaseError) {
             }
-
         })
     }
+
+    fun deletePost(post: Post) {
+        dbRef.child(post.postId!!).removeValue()
+    }
+
 }

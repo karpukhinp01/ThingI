@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thingsi.Data.Post
 import com.example.thingsisee.Data.PostViewModel
@@ -27,15 +28,21 @@ class PostRecyclerViewAdapter: RecyclerView.Adapter<PostRecyclerViewAdapter.View
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+
         val currentItem = mList[position]
+
+        holder.itemView.setOnClickListener {
+            val action = PostFragmentDirections.actionPostFragmentToEditFragment(currentItem)
+            holder.itemView.findNavController().navigate(action)
+        }
 
         // sets the image to the imageview from our itemHolder class
         holder.heading.text = currentItem.postName
 
         // sets the text to the textview from our itemHolder class
         holder.textView.text = currentItem.postText
-
     }
+
 
     fun updatePosts(postList: List<Post>) {
         this.mList.clear()

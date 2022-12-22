@@ -7,13 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thingsisee.Data.PostViewModel
 import com.example.thingsisee.ViewModels.MainViewModel
 import com.example.thingsisee.databinding.FragmentPostListBinding
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * A fragment representing a list of Items.
@@ -50,7 +53,9 @@ class PostFragment : Fragment() {
             adapter.updatePosts(it)
         })
 
-
+        binding.fab.setOnClickListener { view ->
+            findNavController().navigate(R.id.action_postFragment_to_FirstFragment2)
+        }
 
     }
 }

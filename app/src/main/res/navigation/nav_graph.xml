@@ -17,5 +17,21 @@
     <fragment
         android:id="@+id/postFragment"
         android:name="com.example.thingsisee.PostFragment"
-        android:label="PostFragment" />
+        android:label="PostFragment" >
+        <action
+            android:id="@+id/action_postFragment_to_FirstFragment2"
+            app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.thingsisee.EditFragment"
+        android:label="fragment_edit"
+        tools:layout="@layout/fragment_edit" >
+        <argument
+            android:name="post"
+            app:argType="com.example.thingsi.Data.Post" />
+    </fragment>
 </navigation>

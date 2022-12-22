@@ -34,6 +34,10 @@ class MainViewModel() : ViewModel() {
 
 
 
+    fun deletePost(post: Post) {
+        repository.deletePost(post)
+    }
+
     @SuppressLint("SuspiciousIndentation")
     fun insertData(name: String, text: String) {
         val postId = dbRef.push().key!!
