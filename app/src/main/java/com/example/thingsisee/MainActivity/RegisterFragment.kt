@@ -42,8 +42,13 @@ class RegisterFragment : Fragment() {
             .navigate(R.id.action_registerFragment_to_loginFragment) }
 
         binding.registerButton.setOnClickListener {
-            mRegisterLoginViewModel.register(email.text.toString(), password.text.toString())
-
+            if (mRegisterLoginViewModel.checkInputs(email.text.toString(), password.text.toString())
+                && mRegisterLoginViewModel.checkPassword(password.text.toString()) == ""){
+                mRegisterLoginViewModel.register(email.text.toString(), password.text.toString())
+            }
+            else if (!mRegisterLoginViewModel.checkInputs(email.text.toString(), password.text.toString())) {
+                Toast.makeText(requireContext(), "Please fill out the fields!", Toast.LENGTH_LONG).show()
+            } else Toast.makeText(requireContext(), mRegisterLoginViewModel.checkPassword(password.text.toString()), Toast.LENGTH_LONG).show()
         }
 
         mRegisterLoginViewModel.statusMessage.observe(viewLifecycleOwner, Observer {

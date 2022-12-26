@@ -1,7 +1,7 @@
 package com.example.thingsisee.MainActivity
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +13,24 @@ import androidx.navigation.fragment.findNavController
 import com.example.thingsisee.R
 import com.example.thingsisee.ViewModels.RegisterLoginViewModel
 import com.example.thingsisee.databinding.FragmentLoginBinding
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private lateinit var mRegisterLoginViewModel: RegisterLoginViewModel
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val user = Firebase.auth.currentUser
+        if (user != null) {
+            Log.d("logged", user.toString())
+            findNavController().navigate(R.id.action_loginFragment_to_postFragment)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,9 +55,9 @@ class LoginFragment : Fragment() {
         binding.registerButton.setOnClickListener { findNavController()
             .navigate(R.id.action_loginFragment_to_registerFragment) }
         binding.loginButton.setOnClickListener {
-
-            mRegisterLoginViewModel.login(email.text.toString(), password.text.toString())
-
+            if (mRegisterLoginViewModel.checkInputs(email.text.toString(), password.text.toString())) {
+                mRegisterLoginViewModel.login(email.text.toString(), password.text.toString())
+            } else Toast.makeText(requireContext(), "Please fill out the fields", Toast.LENGTH_LONG).show()
         }
 
 

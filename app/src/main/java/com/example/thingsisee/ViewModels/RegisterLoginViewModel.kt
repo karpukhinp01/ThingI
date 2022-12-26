@@ -1,5 +1,6 @@
 package com.example.thingsisee.ViewModels
 
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,6 +37,18 @@ class RegisterLoginViewModel: ViewModel() {
             }
         }.addOnFailureListener { exception ->
             _statusMessage.value = Event(exception.localizedMessage) as Event<String>?
+        }
+    }
+
+    fun checkInputs(email: String, password: String): Boolean {
+        return !(email.isEmpty() || password.isEmpty())
+    }
+
+    fun checkPassword(password: String): String {
+        return when {
+            password.length < 6 -> "Your password should contain at least 6 symbols"
+            password.isDigitsOnly() -> "Your password should contain at least 1 letter"
+            else -> ""
         }
     }
 }
