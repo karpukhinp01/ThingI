@@ -1,4 +1,4 @@
-package com.example.thingsisee
+package com.example.thingsisee.RegisterLoginActivity
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,15 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.thingsisee.ViewModels.MainViewModel
+import com.example.thingsisee.MainActivity.MainActivity
+import com.example.thingsisee.R
 import com.example.thingsisee.ViewModels.RegisterLoginViewModel
 import com.example.thingsisee.databinding.FragmentLoginBinding
-import com.google.firebase.auth.FirebaseAuth
-import kotlin.math.log
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class LoginFragment : Fragment() {
 
@@ -24,6 +24,16 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var mRegisterLoginViewModel: RegisterLoginViewModel
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val user = Firebase.auth.currentUser
+        if (user != null) {
+            Log.d("logged", "logged")
+            val intent= Intent(activity, MainActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -1,22 +1,17 @@
-package com.example.thingsisee
+package com.example.thingsisee.MainActivity
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.thingsisee.Data.PostViewModel
+import com.example.thingsisee.R
 import com.example.thingsisee.ViewModels.MainViewModel
 import com.example.thingsisee.databinding.FragmentPostListBinding
-import com.google.android.material.snackbar.Snackbar
 
 /**
  * A fragment representing a list of Items.

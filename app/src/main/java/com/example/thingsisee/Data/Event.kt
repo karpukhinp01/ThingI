@@ -1,4 +1,4 @@
-package com.example.thingsisee
+package com.example.thingsisee.Data
 
 open class Event<out T>(private val content: T) {
 

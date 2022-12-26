@@ -1,4 +1,4 @@
-package com.example.thingsisee
+package com.example.thingsisee.RegisterLoginActivity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

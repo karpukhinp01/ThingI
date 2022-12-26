@@ -1,4 +1,4 @@
-package com.example.thingsisee
+package com.example.thingsisee.MainActivity
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.thingsisee.R
 import com.example.thingsisee.ViewModels.MainViewModel
 import com.example.thingsisee.databinding.FragmentFirstBinding
 

@@ -1,4 +1,4 @@
-package com.example.thingsisee
+package com.example.thingsisee.MainActivity
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,11 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.thingsisee.ViewModels.MainViewModel
 import com.example.thingsisee.databinding.FragmentEditBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [EditFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class EditFragment : Fragment() {
     private val args by navArgs<EditFragmentArgs>()
     private var _binding: FragmentEditBinding? = null

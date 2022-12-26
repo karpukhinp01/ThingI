@@ -1,14 +1,13 @@
-package com.example.thingsisee
+package com.example.thingsisee.MainActivity
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thingsi.Data.Post
-import com.example.thingsisee.Data.PostViewModel
+import com.example.thingsisee.R
 
 class PostRecyclerViewAdapter: RecyclerView.Adapter<PostRecyclerViewAdapter.ViewHolder>() {
 
