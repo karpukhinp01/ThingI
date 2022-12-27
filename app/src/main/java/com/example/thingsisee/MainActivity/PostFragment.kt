@@ -1,21 +1,21 @@
 package com.example.thingsisee.MainActivity
 
 import android.os.Bundle
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.thingsisee.Data.AuthState
 import com.example.thingsisee.R
 import com.example.thingsisee.ViewModels.MainViewModel
 import com.example.thingsisee.databinding.FragmentPostListBinding
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
 
-/**
- * A fragment representing a list of Items.
- */
+
 class PostFragment : Fragment() {
 
     private lateinit var mMainViewModel: MainViewModel
@@ -31,6 +31,8 @@ class PostFragment : Fragment() {
         _binding = FragmentPostListBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,6 +52,23 @@ class PostFragment : Fragment() {
 
         binding.fab.setOnClickListener { view ->
             findNavController().navigate(R.id.action_postFragment_to_FirstFragment2)
+        }
+
+        binding.postsToolbar.inflateMenu(R.menu.menu_main)
+
+
+        mMainViewModel.authState.observe(viewLifecycleOwner, Observer { authState ->
+            if (authState == AuthState.UNAUTHENTIFICATED) {
+                findNavController().navigate(R.id.action_postFragment_to_loginFragment)
+            }
+        })
+
+        binding.postsToolbar.setOnMenuItemClickListener {
+            if (it.itemId == R.id.action_logout) {
+                AuthUI.getInstance().signOut(requireContext())
+                Log.d("Reg", FirebaseAuth.getInstance().currentUser.toString())
+                true
+            } else false
         }
 
     }

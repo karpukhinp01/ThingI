@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.thingsisee.R
-import com.example.thingsisee.ViewModels.RegisterLoginViewModel
+import com.example.thingsisee.ViewModels.MainViewModel
 import com.example.thingsisee.databinding.FragmentRegisterBinding
 
 class RegisterFragment : Fragment() {
@@ -19,7 +19,7 @@ class RegisterFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var mRegisterLoginViewModel: RegisterLoginViewModel
+    private lateinit var mMainViewModel: MainViewModel
 
 
 
@@ -28,7 +28,7 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
-        mRegisterLoginViewModel = ViewModelProvider(this).get(RegisterLoginViewModel::class.java)
+        mMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         return binding.root
 
     }
@@ -42,16 +42,16 @@ class RegisterFragment : Fragment() {
             .navigate(R.id.action_registerFragment_to_loginFragment) }
 
         binding.registerButton.setOnClickListener {
-            if (mRegisterLoginViewModel.checkInputs(email.text.toString(), password.text.toString())
-                && mRegisterLoginViewModel.checkPassword(password.text.toString()) == ""){
-                mRegisterLoginViewModel.register(email.text.toString(), password.text.toString())
+            if (mMainViewModel.checkInputs(email.text.toString(), password.text.toString())
+                && mMainViewModel.checkPassword(password.text.toString()) == ""){
+                mMainViewModel.register(email.text.toString(), password.text.toString())
             }
-            else if (!mRegisterLoginViewModel.checkInputs(email.text.toString(), password.text.toString())) {
+            else if (!mMainViewModel.checkInputs(email.text.toString(), password.text.toString())) {
                 Toast.makeText(requireContext(), "Please fill out the fields!", Toast.LENGTH_LONG).show()
-            } else Toast.makeText(requireContext(), mRegisterLoginViewModel.checkPassword(password.text.toString()), Toast.LENGTH_LONG).show()
+            } else Toast.makeText(requireContext(), mMainViewModel.checkPassword(password.text.toString()), Toast.LENGTH_LONG).show()
         }
 
-        mRegisterLoginViewModel.statusMessage.observe(viewLifecycleOwner, Observer {
+        mMainViewModel.statusMessage.observe(viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
                 if (it == "Successfully registered!") {

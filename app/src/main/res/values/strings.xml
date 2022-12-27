@@ -70,4 +70,6 @@
     <string name="don_t_have_any_account_yet">Don\'t have any account yet?</string>
     <string name="let_s_get_to_know_each_other">Let\'s get to know each other!</string>
     <string name="what_is_your_name">What is your name?</string>
+    <string name="today_s_posts">Today\'s posts</string>
+    <string name="log_out">Log Out</string>
 </resources>
