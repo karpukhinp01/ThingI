@@ -63,6 +63,8 @@ class PostFragment : Fragment() {
             }
         })
 
+
+
         binding.postsToolbar.setOnMenuItemClickListener {
             if (it.itemId == R.id.action_logout) {
                 AuthUI.getInstance().signOut(requireContext())

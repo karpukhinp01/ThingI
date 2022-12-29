@@ -52,7 +52,6 @@ class FirstFragment : Fragment() {
             mMainViewModel.insertData(postNameET.text.toString(), postTextET.text.toString())
             postNameET.text.clear()
             postTextET.text.clear()
-
         }
     }
 

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.thingsisee.Data.LoadStatus
 import com.example.thingsisee.R
 import com.example.thingsisee.ViewModels.MainViewModel
 import com.example.thingsisee.databinding.FragmentRegisterBinding
@@ -38,6 +39,10 @@ class RegisterFragment : Fragment() {
         val email= binding.email
         val password=binding.password
 
+        mMainViewModel.status.observe(viewLifecycleOwner, Observer { status ->
+            if (status == LoadStatus.REGISTERED) findNavController().navigate(R.id.action_registerFragment_to_userInfoFragment)
+        })
+
         binding.login.setOnClickListener { findNavController()
             .navigate(R.id.action_registerFragment_to_loginFragment) }
 
@@ -57,7 +62,6 @@ class RegisterFragment : Fragment() {
                 if (it == "Successfully registered!") {
                     binding.email.text.clear()
                     binding.password.text.clear()
-                    findNavController().navigate(R.id.action_registerFragment_to_postFragment)
                 }
             }
         })

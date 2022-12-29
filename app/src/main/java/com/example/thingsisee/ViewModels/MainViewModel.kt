@@ -12,19 +12,31 @@ import com.example.thingsi.Data.Post
 import com.example.thingsisee.Data.AuthState
 import com.example.thingsisee.Data.Event
 import com.example.thingsisee.Data.FirebaseUserLiveData
+import com.example.thingsisee.Data.LoadStatus
 import com.example.thingsisee.Repository.PostRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 class MainViewModel() : ViewModel() {
+
+    private var auth = FirebaseAuth.getInstance()
+    val user = Firebase.auth.currentUser
+    var _status = MutableLiveData<LoadStatus>()
+    val status: LiveData<LoadStatus> get() = _status
+
+
+
 
 
     fun register(email: String, password: String) {
 
         auth.createUserWithEmailAndPassword(email, password).addOnFailureListener { exception ->
             Log.d("registration error", exception.toString())
-        }
+        }.addOnSuccessListener { _status.value = LoadStatus.REGISTERED }
     }
 
     fun login(email: String, password: String) {
@@ -36,6 +48,13 @@ class MainViewModel() : ViewModel() {
         }
     }
 
+    fun addUserInfo(name: String) {
+        val profileUpdate = userProfileChangeRequest {
+            displayName = name
+        }
+        user!!.updateProfile(profileUpdate).addOnSuccessListener { _status.value = LoadStatus.SUCCESS }
+            .addOnFailureListener { Log.d("r", "no way") }
+    }
 
 
     fun checkInputs(email: String, password: String): Boolean {
@@ -66,7 +85,6 @@ class MainViewModel() : ViewModel() {
         get() = _statusMessage
 
 
-
     fun deletePost(post: Post) {
         repository.deletePost(post)
     }
@@ -79,9 +97,6 @@ class MainViewModel() : ViewModel() {
         }
             .addOnCanceledListener { _statusMessage.value = Event("Error!") }
     }
-
-
-    private var auth = FirebaseAuth.getInstance()
 
 
     val authState = FirebaseUserLiveData().map { user ->

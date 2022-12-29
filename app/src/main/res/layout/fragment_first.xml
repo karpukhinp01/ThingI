@@ -54,7 +54,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_text_value"/>
 
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
