@@ -56,6 +56,9 @@ class PostFragment : Fragment() {
 
         binding.postsToolbar.inflateMenu(R.menu.menu_main)
 
+        binding.profilePic.setOnClickListener {
+            findNavController().navigate(R.id.action_postFragment_to_userProfileFragment)
+        }
 
         mMainViewModel.authState.observe(viewLifecycleOwner, Observer { authState ->
             if (authState == AuthState.UNAUTHENTIFICATED) {

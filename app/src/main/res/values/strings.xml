@@ -73,4 +73,7 @@
     <string name="today_s_posts">Today\'s posts</string>
     <string name="log_out">Log Out</string>
     <string name="done">Done!</string>
+    <string name="hey_there">Hey there!</string>
+    <string name="user_number">User Number</string>
+    <string name="your_recent_posts">Your recent posts:</string>
 </resources>

@@ -16,9 +16,25 @@
         <Toolbar
             android:id="@+id/posts_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:title="@string/today_s_posts"
-            />
+            android:layout_height="?attr/actionBarSize">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/today_s_posts"
+                android:layout_gravity="center|center"
+                android:textSize="24sp"
+                />
+
+            <ImageButton
+                android:id="@+id/profile_pic"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:paddingHorizontal="16dp"
+                android:layout_gravity="top|start"
+                android:background="@drawable/user" />
+
+        </Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
