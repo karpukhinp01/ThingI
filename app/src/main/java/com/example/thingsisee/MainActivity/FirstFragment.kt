@@ -41,7 +41,7 @@ class FirstFragment : Fragment() {
         val postTextET = binding.postTextValue
         mMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         mMainViewModel.statusMessage.observe(viewLifecycleOwner) {
-            postNameET.text.clear()
+            postNameET.text?.clear()
             postTextET.text?.clear()
             binding.loadingGif.visibility = View.INVISIBLE
             it.getContentIfNotHandled()?.let {

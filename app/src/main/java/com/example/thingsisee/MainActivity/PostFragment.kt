@@ -5,15 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.thingsisee.Data.AuthState
 import com.example.thingsisee.R
+import com.example.thingsisee.R.*
 import com.example.thingsisee.ViewModels.MainViewModel
 import com.example.thingsisee.databinding.FragmentPostListBinding
 import com.firebase.ui.auth.AuthUI
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -54,7 +58,7 @@ class PostFragment : Fragment() {
             findNavController().navigate(R.id.action_postFragment_to_FirstFragment2)
         }
 
-        binding.postsToolbar.inflateMenu(R.menu.menu_main)
+        binding.postsToolbar.inflateMenu(menu.menu_main)
 
         binding.profilePic.setOnClickListener {
             findNavController().navigate(R.id.action_postFragment_to_userProfileFragment)
@@ -67,6 +71,22 @@ class PostFragment : Fragment() {
         }
 
 
+        binding.fab1.setOnClickListener {
+
+            val dialog = BottomSheetDialog(requireContext())
+
+            val view = layoutInflater.inflate(layout.card_post_dialogue, null)
+
+            val profilePic = view.findViewById<ImageView>(R.id.profile_picture)
+
+            profilePic.setBackgroundResource(R.drawable.user)
+
+            dialog.setCancelable(true)
+
+            dialog.setContentView(view)
+
+            dialog.show()
+        }
 
         binding.postsToolbar.setOnMenuItemClickListener {
             if (it.itemId == R.id.action_logout) {
