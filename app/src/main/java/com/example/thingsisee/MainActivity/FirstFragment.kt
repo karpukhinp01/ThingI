@@ -1,5 +1,6 @@
 package com.example.thingsisee.MainActivity
 
+import android.icu.lang.UCharacter.GraphemeClusterBreak.V
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -36,27 +37,30 @@ class FirstFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val postNameET = binding.postNameValue
+        val postTextET = binding.postTextValue
         mMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        mMainViewModel.statusMessage.observe(viewLifecycleOwner, Observer {
+        mMainViewModel.statusMessage.observe(viewLifecycleOwner) {
+            postNameET.text.clear()
+            postTextET.text?.clear()
+            binding.loadingGif.visibility = View.INVISIBLE
             it.getContentIfNotHandled()?.let {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
                 if (it == "Posted successfully!") findNavController().navigate(R.id.action_FirstFragment_to_postFragment)
             }
-        })
+        }
 
-        val postNameET = binding.postNameValue
-        val postTextET = binding.postTextValue
 
 
         binding.postButton.setOnClickListener {
             mMainViewModel.insertData(postNameET.text.toString(), postTextET.text.toString())
-            postNameET.text.clear()
-            postTextET.text.clear()
+            binding.loadingGif.visibility = View.VISIBLE
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
     }
 }

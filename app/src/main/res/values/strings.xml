@@ -76,4 +76,5 @@
     <string name="hey_there">Hey there!</string>
     <string name="user_number">User Number</string>
     <string name="your_recent_posts">Your recent posts:</string>
+    <string name="your_post">Your post</string>
 </resources>

@@ -10,3 +10,6 @@ data class Post(
     var postName: String? = null,
     var postText: String? = null
 ): Parcelable
+/*либо главный ключ это юзерайди либо уникальный номер
+*переделать*/
+

@@ -2,9 +2,10 @@ package com.example.thingsisee.MainActivity
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +28,7 @@ class PostFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentPostListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -42,15 +43,14 @@ class PostFragment : Fragment() {
         val adapter = PostRecyclerViewAdapter()
         // Setting the Adapter with the recyclerview
         recyclerview.adapter = adapter
-
         // this creates a vertical layout Manager
         recyclerview.layoutManager = LinearLayoutManager(requireContext())
         mMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        mMainViewModel.allPosts.observe(viewLifecycleOwner, Observer {
+        mMainViewModel.allPosts.observe(viewLifecycleOwner) {
             adapter.updatePosts(it)
-        })
+        }
 
-        binding.fab.setOnClickListener { view ->
+        binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_postFragment_to_FirstFragment2)
         }
 
@@ -60,11 +60,11 @@ class PostFragment : Fragment() {
             findNavController().navigate(R.id.action_postFragment_to_userProfileFragment)
         }
 
-        mMainViewModel.authState.observe(viewLifecycleOwner, Observer { authState ->
+        mMainViewModel.authState.observe(viewLifecycleOwner) { authState ->
             if (authState == AuthState.UNAUTHENTIFICATED) {
                 findNavController().navigate(R.id.action_postFragment_to_loginFragment)
             }
-        })
+        }
 
 
 

@@ -92,6 +92,7 @@ class MainViewModel() : ViewModel() {
     @SuppressLint("SuspiciousIndentation")
     fun insertData(name: String, text: String) {
         val postId = dbRef.push().key!!
+        Log.d("ins", "trying to insert")
         dbRef.child(postId).setValue(Post(postId, name, text)).addOnCompleteListener {
             _statusMessage.value = Event("Posted successfully!")
         }
