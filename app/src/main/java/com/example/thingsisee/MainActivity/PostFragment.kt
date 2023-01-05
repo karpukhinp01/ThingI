@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -86,6 +87,12 @@ class PostFragment : Fragment() {
             dialog.setContentView(view)
 
             dialog.show()
+
+            val postButton = view.findViewById<Button>(R.id.post_button)
+
+            postButton.setOnClickListener {
+
+            }
         }
 
         binding.postsToolbar.setOnMenuItemClickListener {
