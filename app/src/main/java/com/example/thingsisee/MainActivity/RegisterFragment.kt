@@ -39,9 +39,14 @@ class RegisterFragment : Fragment() {
         val email= binding.email
         val password=binding.password
 
-        mMainViewModel.status.observe(viewLifecycleOwner, Observer { status ->
-            if (status == LoadStatus.REGISTERED) findNavController().navigate(R.id.action_registerFragment_to_userInfoFragment)
-        })
+        mMainViewModel.status.observe(viewLifecycleOwner) { status ->
+            if (status == LoadStatus.REGISTERED) {
+                binding.email.text.clear()
+                binding.password.text.clear()
+                findNavController().navigate(R.id.action_registerFragment_to_userInfoFragment)
+                mMainViewModel.resetStatus()
+            }
+        }
 
         binding.login.setOnClickListener { findNavController()
             .navigate(R.id.action_registerFragment_to_loginFragment) }
@@ -55,16 +60,6 @@ class RegisterFragment : Fragment() {
                 Toast.makeText(requireContext(), "Please fill out the fields!", Toast.LENGTH_LONG).show()
             } else Toast.makeText(requireContext(), mMainViewModel.checkPassword(password.text.toString()), Toast.LENGTH_LONG).show()
         }
-
-        mMainViewModel.statusMessage.observe(viewLifecycleOwner, Observer {
-            it.getContentIfNotHandled()?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-                if (it == "Successfully registered!") {
-                    binding.email.text.clear()
-                    binding.password.text.clear()
-                }
-            }
-        })
     }
 
     override fun onDestroyView() {

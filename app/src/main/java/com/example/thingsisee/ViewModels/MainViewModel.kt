@@ -1,8 +1,14 @@
 package com.example.thingsisee.ViewModels
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.drawable.Drawable
+import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import android.util.Log
+import android.util.TypedValue
 import android.widget.Toast
+import androidx.core.content.res.getColorOrThrow
+import androidx.core.content.res.getDrawableOrThrow
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,7 +34,16 @@ class MainViewModel() : ViewModel() {
     var _status = MutableLiveData<LoadStatus>()
     val status: LiveData<LoadStatus> get() = _status
 
+    var _statusMessage = MutableLiveData<String>()
+    val statusMessage: LiveData<String> get() = _statusMessage
 
+    fun setStatus(status: LoadStatus) {
+        _status.value = status
+    }
+    fun setStatusMessage() {
+        if (status.value == LoadStatus.PENDING) _statusMessage.value = "Getting there..!"
+        else _statusMessage.value = "bfgxdz"
+    }
 
 
 
@@ -80,25 +95,20 @@ class MainViewModel() : ViewModel() {
         repository.loadPosts(_allPosts)
     }
 
-    private val _statusMessage = MutableLiveData<Event<String>>()
-    val statusMessage : LiveData<Event<String>>
-        get() = _statusMessage
-
-
     fun deletePost(post: Post) {
         repository.deletePost(post)
     }
 
-    @SuppressLint("SuspiciousIndentation")
+
     fun insertData(name: String, text: String) {
         val postId = dbRef.push().key!!
         Log.d("ins", "trying to insert")
         dbRef.child(postId).setValue(Post(postId, name, text)).addOnCompleteListener {
-            _statusMessage.value = Event("Posted successfully!")
+            _status.value = LoadStatus.SUCCESS
         }
-            .addOnCanceledListener { _statusMessage.value = Event("Error!") }
-    }
+            .addOnCanceledListener { _status.value = LoadStatus.FAILURE }
 
+    }
 
     val authState = FirebaseUserLiveData().map { user ->
         if (user != null) {
@@ -107,4 +117,8 @@ class MainViewModel() : ViewModel() {
             AuthState.UNAUTHENTIFICATED
         }
     }
+    fun resetStatus() {
+        _status.value = LoadStatus.OK
+    }
+
 }

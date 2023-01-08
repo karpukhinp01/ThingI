@@ -32,7 +32,10 @@ class UserInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mMainViewModel.status.observe(viewLifecycleOwner, Observer { status ->
-            if (status == LoadStatus.SUCCESS) findNavController().navigate(R.id.action_userInfoFragment_to_postFragment)
+            if (status == LoadStatus.SUCCESS) {
+                findNavController().navigate(R.id.action_userInfoFragment_to_postFragment)
+                mMainViewModel.resetStatus()
+            }
         })
 
         binding.doneButton.setOnClickListener {
