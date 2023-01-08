@@ -1,10 +1,12 @@
 package com.example.thingsisee.MainActivity
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -108,6 +110,7 @@ class PostFragment : Fragment() {
 
             postButton.setOnClickListener {
                 mMainViewModel.insertData(FirebaseAuth.getInstance().currentUser!!.displayName.toString(), postText.text.toString())
+                it.hideKeyboard()
                 mMainViewModel.setStatus(LoadStatus.PENDING)
                 statusMessage.visibility = View.VISIBLE
             }
@@ -123,4 +126,10 @@ class PostFragment : Fragment() {
 
     }
 
+}
+
+
+fun View.hideKeyboard() {
+    val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputManager.hideSoftInputFromWindow(windowToken, 0)
 }
