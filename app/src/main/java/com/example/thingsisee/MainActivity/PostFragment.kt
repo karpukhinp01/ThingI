@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -102,11 +103,16 @@ class PostFragment : Fragment() {
 
             dialog.show()
 
+            val backButton = view.findViewById<ImageButton>(R.id.back_button)
             val postButton = view.findViewById<TextView>(R.id.post_button)
             val postText = view.findViewById<TextInputEditText>(R.id.post_text_value)
             val statusMessage = view.findViewById<TextView>(R.id.status_message)
             statusMessage.setText(R.string.getting_there)
             statusMessage.visibility = View.INVISIBLE
+
+            backButton.setOnClickListener {
+                dialog.dismiss()
+            }
 
             postButton.setOnClickListener {
                 mMainViewModel.insertData(FirebaseAuth.getInstance().currentUser!!.displayName.toString(), postText.text.toString())
