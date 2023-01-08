@@ -54,7 +54,6 @@ class PostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var statusMessages: String = "ds"
         val dialog = BottomSheetDialog(requireContext())
         // getting the recyclerview by its id
         val recyclerview = binding.recyclerview
@@ -66,11 +65,6 @@ class PostFragment : Fragment() {
         mMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         mMainViewModel.allPosts.observe(viewLifecycleOwner) {
             adapter.updatePosts(it)
-        }
-
-
-        binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_postFragment_to_FirstFragment2)
         }
 
         binding.postsToolbar.inflateMenu(menu.menu_main)
@@ -87,25 +81,14 @@ class PostFragment : Fragment() {
 
 
         mMainViewModel.status.observe(viewLifecycleOwner) { status ->
-            when (status) {
-                LoadStatus.SUCCESS -> {
+            if (status ==LoadStatus.SUCCESS) {
                     dialog.dismiss()
-                    statusMessages = ""
                     mMainViewModel.resetStatus()
                 }
-
-                LoadStatus.PENDING -> {
-                    statusMessages = "Getting there..."
-                }
-
-                else -> statusMessages = "ds"
-            }
         }
 
 
         binding.fab1.setOnClickListener {
-
-
 
             val view = layoutInflater.inflate(layout.card_post_dialogue, null)
 
@@ -122,13 +105,13 @@ class PostFragment : Fragment() {
             val postButton = view.findViewById<TextView>(R.id.post_button)
             val postText = view.findViewById<TextInputEditText>(R.id.post_text_value)
             val statusMessage = view.findViewById<TextView>(R.id.status_message)
-
-            statusMessage.text = statusMessages
-
+            statusMessage.setText(R.string.getting_there)
+            statusMessage.visibility = View.INVISIBLE
 
             postButton.setOnClickListener {
                 mMainViewModel.insertData(FirebaseAuth.getInstance().currentUser!!.displayName.toString(), postText.text.toString())
                 mMainViewModel.setStatus(LoadStatus.PENDING)
+                statusMessage.visibility = View.VISIBLE
             }
         }
 
