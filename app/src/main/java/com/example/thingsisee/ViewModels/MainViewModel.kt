@@ -1,21 +1,12 @@
 package com.example.thingsisee.ViewModels
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.Instrumentation
-import android.content.Context
+
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.icu.lang.UCharacter.GraphemeClusterBreak.L
+
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
-import android.util.TypedValue
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.res.getColorOrThrow
-import androidx.core.content.res.getDrawableOrThrow
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,12 +14,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import com.example.thingsi.Data.Post
 import com.example.thingsisee.Data.AuthState
-import com.example.thingsisee.Data.Event
 import com.example.thingsisee.Data.FirebaseUserLiveData
 import com.example.thingsisee.Data.LoadStatus
 import com.example.thingsisee.Repository.PostRepository
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
