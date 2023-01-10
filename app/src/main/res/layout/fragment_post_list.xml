@@ -26,11 +26,11 @@
                 android:textSize="24sp"
                 />
 
-            <ImageButton
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_pic"
                 android:layout_width="37dp"
                 android:layout_height="37dp"
-                android:paddingHorizontal="16dp"
+                android:clickable="true"
                 android:layout_gravity="top|start"
                 android:background="@drawable/user" />
 

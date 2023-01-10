@@ -24,9 +24,12 @@ import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 // TODO: Написать страничку с комментариями и возможностью удалить пост если ты автор. Может быть лайки.
+// TODO: Добавить геопозицию
 
 
 class PostFragment : Fragment() {
@@ -52,7 +55,7 @@ class PostFragment : Fragment() {
         val dialog = BottomSheetDialog(requireContext())
         // getting the recyclerview by its id
         val recyclerview = binding.recyclerview
-        val adapter = PostRecyclerViewAdapter()
+        val adapter = PostRecyclerViewAdapter(1)
         // Setting the Adapter with the recyclerview
         recyclerview.adapter = adapter
         // this creates a vertical layout Manager
@@ -64,6 +67,10 @@ class PostFragment : Fragment() {
 
         binding.postsToolbar.inflateMenu(menu.menu_main)
 
+
+        val profilePic = binding.profilePic
+        val profilePicUrl = mMainViewModel.user!!.photoUrl
+        Picasso.with(requireContext()).load(profilePicUrl).into(profilePic)
         binding.profilePic.setOnClickListener {
             findNavController().navigate(R.id.action_postFragment_to_userProfileFragment)
         }
@@ -87,9 +94,12 @@ class PostFragment : Fragment() {
 
             val view = layoutInflater.inflate(layout.card_post_dialogue, null)
 
-            val profilePic = view.findViewById<ImageView>(R.id.profile_picture)
+            val profilePic = view.findViewById<CircleImageView>(R.id.profile_picture)
 
-            profilePic.setBackgroundResource(R.drawable.user)
+            val profilePicUrl = mMainViewModel.user!!.photoUrl
+            if (profilePicUrl != null) {
+                Picasso.with(requireContext()).load(profilePicUrl).into(profilePic)
+            } else profilePic.setBackgroundResource(R.drawable.user)
 
             dialog.setCancelable(true)
 
@@ -103,6 +113,7 @@ class PostFragment : Fragment() {
             val statusMessage = view.findViewById<TextView>(R.id.status_message)
             statusMessage.setText(R.string.getting_there)
             statusMessage.visibility = View.INVISIBLE
+
 
             backButton.setOnClickListener {
                 dialog.dismiss()

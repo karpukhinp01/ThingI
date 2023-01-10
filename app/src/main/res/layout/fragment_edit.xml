@@ -16,4 +16,5 @@
     android:layout_margin="8dp"
     android:id="@+id/delete_button"/>
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>

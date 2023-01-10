@@ -1,5 +1,6 @@
 package com.example.thingsisee.MainActivity
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.thingsi.Data.Post
 import com.example.thingsisee.R
 
-class PostRecyclerViewAdapter: RecyclerView.Adapter<PostRecyclerViewAdapter.ViewHolder>() {
+class PostRecyclerViewAdapter(val start: Int): RecyclerView.Adapter<PostRecyclerViewAdapter.ViewHolder>() {
 
     private val mList = ArrayList<Post>()
 
@@ -31,8 +32,13 @@ class PostRecyclerViewAdapter: RecyclerView.Adapter<PostRecyclerViewAdapter.View
         val currentItem = mList[position]
 
         holder.itemView.setOnClickListener {
-            val action = PostFragmentDirections.actionPostFragmentToEditFragment(currentItem)
-            holder.itemView.findNavController().navigate(action)
+            val action1 = PostFragmentDirections.actionPostFragmentToEditFragment(currentItem)
+            val action2 = UserProfileFragmentDirections.actionUserProfileFragmentToEditFragment(currentItem)
+            if (start == 1) {
+                holder.itemView.findNavController().navigate(action1)
+            } else {
+                holder.itemView.findNavController().navigate(action2)
+            }
         }
 
         // sets the image to the imageview from our itemHolder class

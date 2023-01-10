@@ -6,21 +6,9 @@
     app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.thingsisee.MainActivity.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-        <action
-            android:id="@+id/action_FirstFragment_to_postFragment"
-            app:destination="@id/postFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/postFragment"
         android:name="com.example.thingsisee.MainActivity.PostFragment"
         android:label="PostFragment">
-        <action
-            android:id="@+id/action_postFragment_to_FirstFragment2"
-            app:destination="@id/FirstFragment" />
         <action
             android:id="@+id/action_postFragment_to_editFragment"
             app:destination="@id/editFragment" />
@@ -90,5 +78,8 @@
         <action
             android:id="@+id/action_userProfileFragment_to_postFragment"
             app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_editFragment"
+            app:destination="@id/editFragment" />
     </fragment>
 </navigation>

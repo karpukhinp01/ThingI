@@ -1,12 +1,19 @@
 package com.example.thingsisee.ViewModels
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.icu.lang.UCharacter.GraphemeClusterBreak.L
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import android.util.TypedValue
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.getColorOrThrow
 import androidx.core.content.res.getDrawableOrThrow
 import androidx.core.text.isDigitsOnly
@@ -21,16 +28,27 @@ import com.example.thingsisee.Data.FirebaseUserLiveData
 import com.example.thingsisee.Data.LoadStatus
 import com.example.thingsisee.Repository.PostRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import java.util.*
 
 class MainViewModel() : ViewModel() {
 
+
+
     private var auth = FirebaseAuth.getInstance()
     val user = Firebase.auth.currentUser
+    private var _profilePicUrl = MutableLiveData<Uri>()
+    val profilePicUrl: LiveData<Uri> get() = _profilePicUrl
+
+    fun updateUri() {
+        _profilePicUrl.value = user!!.photoUrl
+    }
+
     var _status = MutableLiveData<LoadStatus>()
     val status: LiveData<LoadStatus> get() = _status
 
@@ -90,6 +108,10 @@ class MainViewModel() : ViewModel() {
     private val _allPosts = MutableLiveData<List<Post>>()
     val allPosts: LiveData<List<Post>> get() = _allPosts
 
+    private val _allUserPosts = MutableLiveData<List<Post>>()
+    val allUserPosts: LiveData<List<Post>> get() = _allUserPosts
+
+
     init {
         repository = PostRepository().getInstance()
         repository.loadPosts(_allPosts)
@@ -99,6 +121,13 @@ class MainViewModel() : ViewModel() {
         repository.deletePost(post)
     }
 
+    fun getUserPosts(name: String): LiveData<List<Post>> {
+        return allPosts.map {
+            it.filter {
+                it.postName.equals(name)
+            }
+        }
+    }
 
     fun insertData(name: String, text: String) {
         val postId = dbRef.push().key!!
@@ -120,5 +149,58 @@ class MainViewModel() : ViewModel() {
     fun resetStatus() {
         _status.value = LoadStatus.OK
     }
+
+//    fun openActivityForResult(startForResult: ActivityResultLauncher<Intent>) {
+//        val intent = Intent(Intent.ACTION_PICK)
+//        intent.type = "image/*"
+//        Log.d("pic", "openactivityforresult")
+//        startForResult.launch(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI))
+//    }
+
+    var selectedUri: Uri? = null
+
+    fun uploadUserPic(startForResult: ActivityResultLauncher<Intent>) {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        Log.d("pic", "openactivityforresult")
+        startForResult.launch(
+            Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            )
+        )
+        Log.d("picture", selectedUri.toString())
+    }
+
+    fun uploadUserPicToFirebaseStorage() {
+        Log.d("pic", "uploaduserpic started")
+        if (selectedUri == null) {
+            Log.d("pic", "uri null")
+            return
+        }
+        Log.d("pic", "uri not null")
+        val filename = UUID.randomUUID().toString()
+        val storageRef = FirebaseStorage.getInstance().getReference("/profilePics/${filename}")
+        storageRef.putFile(selectedUri!!).addOnSuccessListener {
+            storageRef.downloadUrl.addOnSuccessListener {
+                val profilePicUpdate = userProfileChangeRequest {
+                    photoUri = it
+                }
+                user!!.updateProfile(profilePicUpdate).addOnSuccessListener {
+                    Log.d("pic", "set successfully")
+                    updateUri()}
+            }
+        }
+    }
+
+//    fun updateProfilePic(filename: String) {
+//        val storageRef = FirebaseStorage.getInstance().getReference("/profilePics/${filename}")
+//        val profilePicUpdate = userProfileChangeRequest {
+//            photoUri = storageRef.downloadUrl.result
+//        }
+//        user!!.updateProfile(profilePicUpdate).addOnSuccessListener { Log.d("pic", "set successfully") }
+//    }
+
+
 
 }
