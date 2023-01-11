@@ -121,7 +121,7 @@ class MainViewModel() : ViewModel() {
     fun insertData(name: String, text: String) {
         val postId = dbRef.push().key!!
         Log.d("ins", "trying to insert")
-        dbRef.child(postId).setValue(Post(postId, name, text)).addOnCompleteListener {
+        dbRef.child(postId).setValue(Post(postId, user!!.photoUrl.toString(), name, text)).addOnCompleteListener {
             _status.value = LoadStatus.SUCCESS
         }
             .addOnCanceledListener { _status.value = LoadStatus.FAILURE }
@@ -181,6 +181,8 @@ class MainViewModel() : ViewModel() {
             }
         }
     }
+
+
 
 //    fun updateProfilePic(filename: String) {
 //        val storageRef = FirebaseStorage.getInstance().getReference("/profilePics/${filename}")

@@ -1,5 +1,6 @@
 package com.example.thingsisee.MainActivity
 
+import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +10,15 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thingsi.Data.Post
 import com.example.thingsisee.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 
-class PostRecyclerViewAdapter(val start: Int): RecyclerView.Adapter<PostRecyclerViewAdapter.ViewHolder>() {
+class PostRecyclerViewAdapter(val start: Int, context: Context): RecyclerView.Adapter<PostRecyclerViewAdapter.ViewHolder>() {
 
+    val context = context
     private val mList = ArrayList<Post>()
 
     // create new views
@@ -41,6 +48,8 @@ class PostRecyclerViewAdapter(val start: Int): RecyclerView.Adapter<PostRecycler
             }
         }
 
+
+        Picasso.with(context).load(currentItem.userPic).into(holder.userPicture)
         // sets the image to the imageview from our itemHolder class
         holder.heading.text = currentItem.postName
 
@@ -62,6 +71,7 @@ class PostRecyclerViewAdapter(val start: Int): RecyclerView.Adapter<PostRecycler
 
     // Holds the views for adding it to image and text
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+        val userPicture: CircleImageView = itemView.findViewById(R.id.card_profile_image)
         val heading: TextView = itemView.findViewById(R.id.heading)
         val textView: TextView = itemView.findViewById(R.id.textView)
     }

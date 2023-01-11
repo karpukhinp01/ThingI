@@ -23,6 +23,8 @@ import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -54,7 +56,7 @@ class PostFragment : Fragment() {
         val dialog = BottomSheetDialog(requireContext())
         // getting the recyclerview by its id
         val recyclerview = binding.recyclerview
-        val adapter = PostRecyclerViewAdapter(1)
+        val adapter = PostRecyclerViewAdapter(1, requireContext())
         // Setting the Adapter with the recyclerview
         recyclerview.adapter = adapter
         // this creates a vertical layout Manager

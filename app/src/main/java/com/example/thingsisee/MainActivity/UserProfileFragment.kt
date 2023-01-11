@@ -30,7 +30,9 @@ class UserProfileFragment : Fragment() {
             Log.d("pic4", "${result.data}")
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 mMainViewModel.selectedUri = result.data!!.data
+                binding.userPic.setImageResource(R.drawable.user)
                 mMainViewModel.uploadUserPicToFirebaseStorage()
+
             }
         }
 
@@ -60,7 +62,7 @@ class UserProfileFragment : Fragment() {
         }
         // getting the recyclerview by its id
         val recyclerView = binding.recyclerView
-        val adapter = PostRecyclerViewAdapter(2)
+        val adapter = PostRecyclerViewAdapter(2, requireContext())
         // Setting the Adapter with the recyclerview
         recyclerView.adapter = adapter
         // this creates a vertical layout Manager
