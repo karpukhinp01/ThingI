@@ -64,7 +64,12 @@ class PostFragment : Fragment() {
             adapter.updatePosts(it)
         }
 
-        binding.postsToolbar.inflateMenu(menu.menu_main)
+
+
+        val firebaseAuth = FirebaseAuth.getInstance()
+        if (firebaseAuth.currentUser?.getIdToken(true) == null) {
+            findNavController().navigate(R.id.action_postFragment_to_loginFragment)
+        }
 
 
         val profilePic = binding.profilePic
@@ -73,7 +78,7 @@ class PostFragment : Fragment() {
         binding.profilePic.setOnClickListener {
             findNavController().navigate(R.id.action_postFragment_to_userProfileFragment)
         }
-
+        binding.postsToolbar.inflateMenu(R.menu.menu_main)
         mMainViewModel.authState.observe(viewLifecycleOwner) { authState ->
             if (authState == AuthState.UNAUTHENTIFICATED) {
                 findNavController().navigate(R.id.action_postFragment_to_loginFragment)
