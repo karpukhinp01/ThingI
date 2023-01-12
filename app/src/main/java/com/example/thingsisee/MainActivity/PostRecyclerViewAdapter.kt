@@ -2,6 +2,7 @@ package com.example.thingsisee.MainActivity
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thingsi.Data.Post
+import com.example.thingsisee.Data.User
 import com.example.thingsisee.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -16,10 +18,13 @@ import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
-class PostRecyclerViewAdapter(val start: Int, context: Context): RecyclerView.Adapter<PostRecyclerViewAdapter.ViewHolder>() {
+class PostRecyclerViewAdapter(val start: Int, val context: Context): RecyclerView.Adapter<PostRecyclerViewAdapter.ViewHolder>() {
 
-    val context = context
     private val mList = ArrayList<Post>()
+    private val pics = ArrayList<User>()
+    private val picsMap = mutableMapOf<String?, String?>()
+
+
 
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,6 +40,9 @@ class PostRecyclerViewAdapter(val start: Int, context: Context): RecyclerView.Ad
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        pics.associateTo(picsMap) {
+            it.uid to it.pic
+        }
 
         val currentItem = mList[position]
 
@@ -49,7 +57,9 @@ class PostRecyclerViewAdapter(val start: Int, context: Context): RecyclerView.Ad
         }
 
 
-        Picasso.with(context).load(currentItem.userPic).into(holder.userPicture)
+
+
+        Picasso.with(context).load(picsMap[currentItem.uid]).into(holder.userPicture)
         // sets the image to the imageview from our itemHolder class
         holder.heading.text = currentItem.postName
 
@@ -62,7 +72,11 @@ class PostRecyclerViewAdapter(val start: Int, context: Context): RecyclerView.Ad
         this.mList.clear()
         this.mList.addAll(postList)
         notifyDataSetChanged()
+    }
 
+    fun updatePics(pics: List<User>) {
+        this.pics.addAll(pics)
+        notifyDataSetChanged()
     }
     // return the number of the items in the list
     override fun getItemCount(): Int {

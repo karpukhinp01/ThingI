@@ -16,6 +16,7 @@ import com.example.thingsi.Data.Post
 import com.example.thingsisee.Data.AuthState
 import com.example.thingsisee.Data.FirebaseUserLiveData
 import com.example.thingsisee.Data.LoadStatus
+import com.example.thingsisee.Data.User
 import com.example.thingsisee.Repository.PostRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -23,11 +24,12 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import java.sql.Timestamp
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class MainViewModel() : ViewModel() {
-
-
 
     private var auth = FirebaseAuth.getInstance()
     val user = Firebase.auth.currentUser
@@ -47,10 +49,9 @@ class MainViewModel() : ViewModel() {
     fun setStatus(status: LoadStatus) {
         _status.value = status
     }
-    fun setStatusMessage() {
-        if (status.value == LoadStatus.PENDING) _statusMessage.value = "Getting there..!"
-        else _statusMessage.value = "bfgxdz"
-    }
+
+    private var _allUserPics = MutableLiveData<List<User>>()
+    val allUserPics: LiveData<List<User>> get() = _allUserPics
 
 
 
@@ -92,18 +93,16 @@ class MainViewModel() : ViewModel() {
     }
 
     private val dbRef = FirebaseDatabase.getInstance().getReference("Posts")
+    val userdb = FirebaseDatabase.getInstance().getReference("Users")
 
     private val repository: PostRepository
     private val _allPosts = MutableLiveData<List<Post>>()
     val allPosts: LiveData<List<Post>> get() = _allPosts
 
-    private val _allUserPosts = MutableLiveData<List<Post>>()
-    val allUserPosts: LiveData<List<Post>> get() = _allUserPosts
-
-
     init {
         repository = PostRepository().getInstance()
         repository.loadPosts(_allPosts)
+        repository.loadUserPics(_allUserPics)
     }
 
     fun deletePost(post: Post) {
@@ -120,12 +119,13 @@ class MainViewModel() : ViewModel() {
 
     fun insertData(name: String, text: String) {
         val postId = dbRef.push().key!!
+        val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
+
         Log.d("ins", "trying to insert")
-        dbRef.child(postId).setValue(Post(postId, user!!.photoUrl.toString(), name, text)).addOnCompleteListener {
+        dbRef.child(postId).setValue(Post(postId, timestamp, user!!.uid, name, text)).addOnCompleteListener {
             _status.value = LoadStatus.SUCCESS
         }
             .addOnCanceledListener { _status.value = LoadStatus.FAILURE }
-
     }
 
     val authState = FirebaseUserLiveData().map { user ->
@@ -138,13 +138,6 @@ class MainViewModel() : ViewModel() {
     fun resetStatus() {
         _status.value = LoadStatus.OK
     }
-
-//    fun openActivityForResult(startForResult: ActivityResultLauncher<Intent>) {
-//        val intent = Intent(Intent.ACTION_PICK)
-//        intent.type = "image/*"
-//        Log.d("pic", "openactivityforresult")
-//        startForResult.launch(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI))
-//    }
 
     var selectedUri: Uri? = null
 
@@ -160,38 +153,27 @@ class MainViewModel() : ViewModel() {
         )
         Log.d("picture", selectedUri.toString())
     }
-
     fun uploadUserPicToFirebaseStorage() {
         Log.d("pic", "uploaduserpic started")
         if (selectedUri == null) {
-            Log.d("pic", "uri null")
             return
         }
-        Log.d("pic", "uri not null")
+
         val filename = UUID.randomUUID().toString()
         val storageRef = FirebaseStorage.getInstance().getReference("/profilePics/${filename}")
         storageRef.putFile(selectedUri!!).addOnSuccessListener {
             storageRef.downloadUrl.addOnSuccessListener {
                 val profilePicUpdate = userProfileChangeRequest {
                     photoUri = it
+                    userdb.child(user!!.uid).setValue(User(user.uid, it.toString()))
                 }
                 user!!.updateProfile(profilePicUpdate).addOnSuccessListener {
                     Log.d("pic", "set successfully")
-                    updateUri()}
+                    updateUri()
+                }
+
             }
         }
     }
-
-
-
-//    fun updateProfilePic(filename: String) {
-//        val storageRef = FirebaseStorage.getInstance().getReference("/profilePics/${filename}")
-//        val profilePicUpdate = userProfileChangeRequest {
-//            photoUri = storageRef.downloadUrl.result
-//        }
-//        user!!.updateProfile(profilePicUpdate).addOnSuccessListener { Log.d("pic", "set successfully") }
-//    }
-
-
 
 }

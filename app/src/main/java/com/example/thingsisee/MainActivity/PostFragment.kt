@@ -65,6 +65,9 @@ class PostFragment : Fragment() {
         mMainViewModel.allPosts.observe(viewLifecycleOwner) {
             adapter.updatePosts(it)
         }
+        mMainViewModel.allUserPics.observe(viewLifecycleOwner) {
+            adapter.updatePics(it)
+        }
 
 
 

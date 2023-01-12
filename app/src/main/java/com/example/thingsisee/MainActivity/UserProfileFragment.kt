@@ -81,6 +81,9 @@ class UserProfileFragment : Fragment() {
         userPosts.observe(viewLifecycleOwner) {
             adapter.updatePosts(it)
         }
+        mMainViewModel.allUserPics.observe(viewLifecycleOwner) {
+            adapter.updatePics(it)
+        }
 
     }
 }
