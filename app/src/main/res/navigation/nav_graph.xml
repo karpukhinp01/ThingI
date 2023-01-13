@@ -29,6 +29,10 @@
         <argument
             android:name="post"
             app:argType="com.example.thingsi.Data.Post" />
+        <argument
+            android:name="userPic"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"

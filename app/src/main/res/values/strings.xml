@@ -81,4 +81,6 @@
     <string name="getting_there">Getting there...</string>
     <string name="delete_post">Delete Post</string>
     <string name="change_profile_picture">Change Profile picture</string>
+    <string name="edit">edit</string>
+    <string name="edit_text">Edit</string>
 </resources>

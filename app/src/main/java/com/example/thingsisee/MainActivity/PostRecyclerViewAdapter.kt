@@ -47,8 +47,8 @@ class PostRecyclerViewAdapter(val start: Int, val context: Context): RecyclerVie
         val currentItem = mList[position]
 
         holder.itemView.setOnClickListener {
-            val action1 = PostFragmentDirections.actionPostFragmentToEditFragment(currentItem)
-            val action2 = UserProfileFragmentDirections.actionUserProfileFragmentToEditFragment(currentItem)
+            val action1 = PostFragmentDirections.actionPostFragmentToEditFragment(currentItem, picsMap[currentItem.uid])
+            val action2 = UserProfileFragmentDirections.actionUserProfileFragmentToEditFragment(currentItem, picsMap[currentItem.uid])
             if (start == 1) {
                 holder.itemView.findNavController().navigate(action1)
             } else {

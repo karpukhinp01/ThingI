@@ -117,6 +117,10 @@ class MainViewModel() : ViewModel() {
         }
     }
 
+    fun editPost(postId: String, timestamp: String, uid:String, name: String, postText: String) {
+        dbRef.child(postId).setValue(Post(postId, timestamp, uid, name, postText))
+    }
+
     fun insertData(name: String, text: String) {
         val postId = dbRef.push().key!!
         val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
