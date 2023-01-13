@@ -46,6 +46,21 @@ class PostRepository {
         dbRef.child(post.postId!!).removeValue()
     }
 
+    fun loadComments(postId: String, commentList: MutableLiveData<List<Post>>) {
+        dbRef.child(postId).child("Comments").addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                try {
+                    val _commentList: List<Post> = snapshot.children.map { dataSnapshot ->
+                        dataSnapshot.getValue(Post::class.java)!!
+                    }
+                    commentList.postValue(_commentList)
+                } catch (e: Exception) {}
+            }
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
+
     fun loadUserPics(picList: MutableLiveData<List<User>>) {
         userDbRef.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {

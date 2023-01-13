@@ -110,16 +110,43 @@
         app:layout_constraintEnd_toStartOf="@id/delete_button"
         android:alpha="0.5"/>
 
-<!--<TextView-->
-<!--    android:layout_width="wrap_content"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:textSize="18sp"-->
-<!--    android:text="Delete Post"-->
-<!--    app:layout_constraintStart_toStartOf="parent"-->
-<!--    app:layout_constraintEnd_toEndOf="parent"-->
-<!--    app:layout_constraintTop_toBottomOf="@id/post_text"-->
-<!--    android:layout_margin="8dp"-->
-<!--    android:id="@+id/delete_button"/>-->
+    <View
+        android:id="@+id/split_line"
+        android:layout_width="match_parent"
+        android:layout_height= "1dp"
+        android:background="@color/material_dynamic_neutral80"
+        app:layout_constraintBottom_toTopOf="@id/comments_heading"
+        android:layout_margin="8dp"/>
+
+    <TextView
+        android:id="@+id/comments_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/comments"
+        app:layout_constraintTop_toBottomOf="@id/post_text"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginHorizontal="8dp"
+        android:textSize="24sp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/temp"
+        android:text="comment"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/comments_heading"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="8dp"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

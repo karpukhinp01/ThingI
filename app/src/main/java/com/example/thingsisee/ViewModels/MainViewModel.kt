@@ -31,6 +31,7 @@ import java.util.*
 
 class MainViewModel() : ViewModel() {
 
+    val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
     private var auth = FirebaseAuth.getInstance()
     val user = Firebase.auth.currentUser
     private var _profilePicUrl = MutableLiveData<Uri>()
@@ -99,6 +100,9 @@ class MainViewModel() : ViewModel() {
     private val _allPosts = MutableLiveData<List<Post>>()
     val allPosts: LiveData<List<Post>> get() = _allPosts
 
+    private val _allComments = MutableLiveData<List<Post>>()
+    val allComments: LiveData<List<Post>> get() = _allComments
+
     init {
         repository = PostRepository().getInstance()
         repository.loadPosts(_allPosts)
@@ -123,7 +127,6 @@ class MainViewModel() : ViewModel() {
 
     fun insertData(name: String, text: String) {
         val postId = dbRef.push().key!!
-        val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
 
         Log.d("ins", "trying to insert")
         dbRef.child(postId).setValue(Post(postId, timestamp, user!!.uid, name, text)).addOnCompleteListener {
@@ -162,7 +165,6 @@ class MainViewModel() : ViewModel() {
         if (selectedUri == null) {
             return
         }
-
         val filename = UUID.randomUUID().toString()
         val storageRef = FirebaseStorage.getInstance().getReference("/profilePics/${filename}")
         storageRef.putFile(selectedUri!!).addOnSuccessListener {
@@ -175,9 +177,16 @@ class MainViewModel() : ViewModel() {
                     Log.d("pic", "set successfully")
                     updateUri()
                 }
-
             }
         }
     }
 
+    fun loadComments(postId: String) {
+        repository.loadComments(postId, _allComments)
+    }
+
+    fun comment(postId: String, commentText: String) {
+        val commentId = dbRef.child(postId).child("Comments").push().key!!
+        dbRef.child(postId).child("Comments").child(commentId).setValue(Post(commentId, timestamp, user!!.uid, user.displayName, commentText))
+    }
 }

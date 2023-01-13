@@ -46,17 +46,17 @@ class PostRecyclerViewAdapter(val start: Int, val context: Context): RecyclerVie
 
         val currentItem = mList[position]
 
-        holder.itemView.setOnClickListener {
-            val action1 = PostFragmentDirections.actionPostFragmentToEditFragment(currentItem, picsMap[currentItem.uid])
-            val action2 = UserProfileFragmentDirections.actionUserProfileFragmentToEditFragment(currentItem, picsMap[currentItem.uid])
-            if (start == 1) {
-                holder.itemView.findNavController().navigate(action1)
-            } else {
-                holder.itemView.findNavController().navigate(action2)
+        if (start == 1 || start == 2) {
+            holder.itemView.setOnClickListener {
+                val action1 = PostFragmentDirections.actionPostFragmentToEditFragment(currentItem, picsMap[currentItem.uid])
+                val action2 = UserProfileFragmentDirections.actionUserProfileFragmentToEditFragment(currentItem, picsMap[currentItem.uid])
+                if (start == 1) {
+                    holder.itemView.findNavController().navigate(action1)
+                } else {
+                    holder.itemView.findNavController().navigate(action2)
+                }
             }
         }
-
-
 
 
         Picasso.with(context).load(picsMap[currentItem.uid]).into(holder.userPicture)
