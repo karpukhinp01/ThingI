@@ -84,4 +84,6 @@
     <string name="edit">edit</string>
     <string name="edit_text">Edit</string>
     <string name="comments">Comments:</string>
+    <string name="add_comment">Add Comment:</string>
+    <string name="details">Details</string>
 </resources>

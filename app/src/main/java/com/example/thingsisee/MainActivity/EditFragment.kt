@@ -1,11 +1,13 @@
 package com.example.thingsisee.MainActivity
 
 import android.app.ActionBar.LayoutParams
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -13,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.thingsisee.ViewModels.MainViewModel
 import com.example.thingsisee.databinding.FragmentEditBinding
+import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.squareup.picasso.Picasso
 
 
@@ -40,7 +43,6 @@ class EditFragment : Fragment() {
         binding.postName.text = args.post.postName
         binding.postText.text = args.post.postText
         Picasso.with(requireContext()).load(args.userPic).into(binding.userPic)
-
         val recyclerview = binding.recyclerView
         val adapter = PostRecyclerViewAdapter(3, requireContext())
         // Setting the Adapter with the recyclerview
@@ -99,8 +101,12 @@ class EditFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        binding.temp.setOnClickListener {
-            mMainViewModel.comment(args.post.postId!!, "Hello again!")
+        val commentText = binding.commentEt.text
+
+        binding.sendButton.setOnClickListener {
+            mMainViewModel.comment(args.post.postId!!, commentText.toString())
+            commentText.clear()
+            it.hideKeyboard()
         }
 
     }
@@ -109,4 +115,10 @@ class EditFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+    fun View.hideKeyboard() {
+        val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(windowToken, 0)
+    }
 }
+
+

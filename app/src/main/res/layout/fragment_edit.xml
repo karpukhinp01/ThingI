@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Details"
+            android:text="@string/details"
             android:layout_gravity="center|center"
             android:textSize="24sp"
             />
@@ -129,23 +129,54 @@
         android:layout_marginHorizontal="8dp"
         android:textSize="24sp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/temp"
-        android:text="comment"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/comments_heading"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="8dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/comments_heading" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/background_comment"
+        android:layout_width="match_parent"
+        android:layout_height= "wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:paddingTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/comment_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:hint="@string/add_comment"
+                android:alpha="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/send_button"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="50dp"/>
+
+            <TextView
+                android:id="@+id/send_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="send"
+                android:textSize="20sp"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintBottom_toBottomOf="@id/comment_et"
+                app:layout_constraintTop_toTopOf="@id/comment_et"
+                app:layout_constraintStart_toEndOf="@id/comment_et"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+
 
 
 
